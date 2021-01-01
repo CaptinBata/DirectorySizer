@@ -1,0 +1,3 @@
+[bandit]
+targets: directory_sizer
+exclude: .venv

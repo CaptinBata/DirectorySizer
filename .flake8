@@ -1,0 +1,10 @@
+[flake8]
+application_import_names =
+    directory_sizer
+ignore = E203,W503,D212,T001 #Ignore print because we want it for the script output
+docstring-convention=google
+exclude = .git,dist,.history,.venv
+statistics = True
+count = True
+per-file-ignores =
+    tests/*:D
