@@ -26,6 +26,7 @@ def assign_args(args):
                 verbose = True
             else:
                 path = str(Path(args[i]).resolve())
+                print(f"Path: {path}")
     else:
         path = str(Path(args[0]).resolve())
 
