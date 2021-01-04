@@ -15,11 +15,20 @@ class Folder(BaseObject):
         self.folders = []
         self.files = []
 
+    def start(self):
+        """Start the directory sizer."""
+        print("Scanning provided directory")
+        self._scan()
+        print("Calculating size of directory")
+        self._calculate_size()
+        print("Outputting findings into text file in passed directory")
+        self._output()
+
     def verbose_print(self, message, data, scalor=""):
         """Print out the given arguments. Used when verbose is set to true."""
         print(f" - {message}: {data} {scalor}")
 
-    def scan(self):
+    def _scan(self):
         """Scan the given directory for sub folders/files."""
         self.path_object = Path(self.path)
         for sub_contents in self.path_object.iterdir():
@@ -31,7 +40,7 @@ class Folder(BaseObject):
                 self.folders.append(
                     Folder(path_string, self.size_scalor, verbose=self.verbose)
                 )
-                self.folders[-1].scan()
+                self.folders[-1]._scan()
 
             if sub_contents.is_file():
                 if self.verbose:
@@ -55,13 +64,13 @@ class Folder(BaseObject):
                 )
         return size
 
-    def calculate_size(self):
+    def _calculate_size(self):
         """Calculate the size of the sub folders/files."""
         size = 0
         for folder in self.folders:
             sub_size = 0
             for sub_folder in folder.folders:
-                sub_size += sub_folder.calculate_size()
+                sub_size += sub_folder._calculate_size()
 
             sub_size += self._calculate_file_size(folder.files)
 
@@ -86,6 +95,6 @@ class Folder(BaseObject):
 
         return size
 
-    def output(self):
+    def _output(self):
         """Output the findings of the directory."""
         pass

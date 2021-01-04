@@ -9,24 +9,29 @@ args = sys.argv
 path = ""
 verbose = False
 scalor = "B"
+allowed_scalors = ["B", "KB", "MB", "GB", "TB"]
 
-if len(args) == 4:
-    path = str(Path(args[1]).resolve())  # index 1 because 0 is the script name
-    verbose = True if args[3] == "-v" else False
-    scalor = args[2]
-if len(args) == 3:
-    path = str(Path(args[1]).resolve())  # index 1 because 0 is the script name
-    scalor = args[2]
-elif len(args) == 2:
-    path = str(Path(args[1]).resolve())  # index 1 because 0 is the script name
-elif len(args) == 1:
-    path = str(Path(args[0]).resolve())
+
+def assign_args(args):
+    """Assign the passed in args."""
+    global path
+    global scalor
+    global verbose
+
+    if len(args) > 1:
+        for i in range(1, len(args)):
+            if args[i] in allowed_scalors:
+                scalor = args[i]
+            elif args[i] == "-v":
+                verbose = True
+            else:
+                path = str(Path(args[i]).resolve())
+    else:
+        path = str(Path(args[0]).resolve())
+
+
+assign_args(args)
 
 directory = Folder(path, scalor, verbose=verbose)
 
-print("Scanning provided directory")
-directory.scan()
-print("Calculating size of directory")
-directory.calculate_size()
-print("Outputting findings into text file in passed directory")
-directory.output()
+directory.start()
